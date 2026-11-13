@@ -1,0 +1,249 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ─────────────────────────────────────────────────────────────
+ * UBEE · Modern Hair Studio — design tokens
+ * The palette is the salon itself: dark walnut walls (ink/walnut),
+ * the travertine counter (bone/travertine), and the warm LED filament
+ * that runs above reception (filament). Gold is a light, not a paint:
+ * it only appears where something switches on.
+ *
+ * Colour theory applied (values designed in OKLCH, shipped as hex):
+ *  · One hue axis for every neutral (≈60°, warm walnut) with even
+ *    lightness steps, so surfaces read as one material, not five greys.
+ *  · 60 · 30 · 10 reversed for a dark room: ink dominates, walnut/bone
+ *    carry structure, filament is the ≤10% accent.
+ *  · Ember (copper, analogous to the gold) is a 2% note — the colour of
+ *    hair — for club badges and warm highlights.
+ *  · Dusk (a cool, near-complementary shadow) sits under the gold at
+ *    very low opacity: simultaneous contrast makes the light glow.
+ *  · Muted text tones pass WCAG AA on their backgrounds (≥4.5:1).
+ * ───────────────────────────────────────────────────────────── */
+:root {
+  --ink: #100c09; /* oklch(0.158 0.009 62) */
+  --walnut: #1c1611; /* oklch(0.205 0.014 58) */
+  --umber: #2e241d; /* oklch(0.270 0.020 55) */
+  --line: #3f342d; /* oklch(0.335 0.020 58) */
+  --filament: #f0be74; /* oklch(0.830 0.108 76) */
+  --filament-soft: #f7e0b8; /* oklch(0.915 0.058 82) */
+  --ember: #d4804a; /* oklch(0.680 0.125 52) */
+  --dusk: #15202d; /* oklch(0.240 0.030 255) */
+  --bone: #f4efe7; /* oklch(0.955 0.013 82) */
+  --paper: #fbf7f1; /* oklch(0.978 0.009 85) */
+  --travertine: #eee5d8; /* oklch(0.925 0.020 78) */
+  --stone: #ada398; /* oklch(0.720 0.020 68) · 7.8:1 on ink */
+  --stone-dark: #887c73; /* oklch(0.595 0.020 62) · 4.8:1 on ink */
+  --stone-ink: #6a5e54; /* oklch(0.490 0.022 60) · 5.0:1 on travertine */
+
+  --ff-display: "Melodrama", "Didot", serif;
+  --ff-italic: "Boska", "Melodrama", serif;
+  --ff-wide: "Panchang", "Arial Black", sans-serif;
+  --ff-body: "Switzer", system-ui, sans-serif;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* shadcn mapping */
+  --background: var(--ink);
+  --foreground: var(--bone);
+  --card: var(--walnut);
+  --card-foreground: var(--bone);
+  --popover: var(--walnut);
+  --popover-foreground: var(--bone);
+  --primary: var(--bone);
+  --primary-foreground: var(--ink);
+  --secondary: var(--umber);
+  --secondary-foreground: var(--bone);
+  --muted: var(--umber);
+  --muted-foreground: var(--stone);
+  --accent: var(--filament);
+  --accent-foreground: var(--ink);
+  --destructive: #e5674f;
+  --border: var(--line);
+  --input: var(--line);
+  --ring: var(--filament);
+  --radius: 0.75rem;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-walnut: var(--walnut);
+  --color-umber: var(--umber);
+  --color-line: var(--line);
+  --color-filament: var(--filament);
+  --color-filament-soft: var(--filament-soft);
+  --color-bone: var(--bone);
+  --color-paper: var(--paper);
+  --color-stone: var(--stone);
+  --color-stone-dark: var(--stone-dark);
+  --color-stone-ink: var(--stone-ink);
+  --color-ember: var(--ember);
+  --color-dusk: var(--dusk);
+  --color-travertine: var(--travertine);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--ff-body);
+  --font-display: var(--ff-display);
+  --font-wide: var(--ff-wide);
+  --font-heading: var(--ff-display);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+
+  --animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    background: var(--ink);
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--ink);
+    color: var(--bone);
+    font-family: var(--ff-body), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--filament);
+    color: var(--ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--filament);
+    outline-offset: 3px;
+  }
+  img {
+    user-select: none;
+  }
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+@layer utilities {
+  /* Wide caps label — echoes the "MODERN HAIR STUDIO" line of the logo */
+  .label-wide {
+    font-family: var(--ff-wide);
+    font-weight: 600;
+    font-size: 0.6rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    line-height: 1.6;
+  }
+  .display {
+    font-family: var(--ff-display);
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    line-height: 0.96;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  /* The arched mirror frame from the salon */
+  .arch {
+    border-radius: 999px 999px 1.25rem 1.25rem;
+  }
+  .glow-filament {
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--filament) 55%, transparent),
+      0 0 24px -2px color-mix(in oklab, var(--filament) 50%, transparent),
+      0 0 90px -10px color-mix(in oklab, var(--filament) 35%, transparent);
+  }
+  .grain {
+    position: relative;
+    isolation: isolate;
+  }
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.07;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+}
+
+/* Accent words switch to Boska's italic — the "light" in a headline. */
+.display .italic,
+.display.italic,
+.accent-italic {
+  font-family: var(--ff-italic);
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+}
+
+/* Pressable — every button confirms it was heard */
+.press {
+  transition:
+    transform 160ms var(--ease-out),
+    background-color 200ms ease,
+    color 200ms ease,
+    border-color 200ms ease,
+    box-shadow 300ms ease;
+}
+.press:active {
+  transform: scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
