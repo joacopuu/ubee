@@ -1,5 +1,5 @@
 import "server-only";
-import { cacheLife, cacheTag } from "next/cache";
+import { unstable_cache } from "next/cache";
 import { staticContent, type Content } from "./data";
 import { rowToNews, rowToProduct, rowToService } from "./mappers";
 import { db } from "./supabase";
@@ -7,15 +7,17 @@ import { db } from "./supabase";
 /**
  * Site content (services, products, news).
  *
- * Cached with the "content" tag: pages are served from the cache, and when
- * the salon saves something in the panel a Server Action calls
- * updateTag("content"), so the next visit already shows the change.
+ * Cached for an hour with the "content" tag: pages are served from the
+ * cache, and when the salon saves something in the panel a Server Action
+ * calls updateTag("content"), so the next visit already shows the change.
+ * (unstable_cache instead of "use cache": Cache Components hang on Workers.)
  */
-export async function getContent(): Promise<Content> {
-  "use cache";
-  cacheTag("content");
-  cacheLife("hours");
+export const getContent = unstable_cache(loadContent, ["content"], {
+  tags: ["content"],
+  revalidate: 3600,
+});
 
+async function loadContent(): Promise<Content> {
   const client = db();
   if (!client) return staticContent();
 
